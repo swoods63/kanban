@@ -25,7 +25,7 @@ let state = {
   boards: [],
   activeBoard: {},
   lists: [],
-  // activeList: {},
+  activeList: {},
   error: {},
   // activeTask: {},
   // activeComment: {},
@@ -125,6 +125,7 @@ export default new Vuex.Store({
     getLists({commit, dispatch}, id) {
       api('/boards/' + id + '/lists')
         .then(res => {
+          
           commit('setActiveList', res.data.data)
         })
         .catch(handleError)
@@ -132,7 +133,8 @@ export default new Vuex.Store({
     // -------------------------------------
     createList({commit, dispatch}, list) {
       api.post('/lists', list)
-        .then(res => {
+        .then(res => {  
+        
           dispatch('getLists', list.boardId)
         })
         .catch(handleError)
@@ -153,9 +155,11 @@ export default new Vuex.Store({
         .catch(handleError)
     },
 
-    getTasks({commit, dispatch}, boardId, listId) {
-      api('boards/' + boardId + '/lists/' + listId + '/tasks')
+    getTasks({commit, dispatch}, list) {
+     
+      api('boards/' + list.boardId + '/lists/' + list.listId + '/tasks')
         .then(res => {
+          
           //Vue.set(state.tasks, listId, res.data.data.tasks)
           commit('setTasks', res.data.data.tasks)
         })

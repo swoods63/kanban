@@ -33,7 +33,7 @@ export default new Router({
     },{
       path: '*',
       redirect: '/',
-      component: Homepage
+      component: Home
     }
   ]
 })

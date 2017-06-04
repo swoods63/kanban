@@ -28,7 +28,9 @@
             <h2>Board description: {{board.description}}</h2>
           </div>
         </div>-->
-        <List v-for="list in lists" :listProp="list" class="col-xs-4"></List>
+        <div>lists</div>       
+        <div v-for="list in lists">List is {{list._id}}</div>       
+         <List v-for="list in lists" :listProp="list" class="col-xs-4"></List>
       </div>
     </div>
   </div>
@@ -43,21 +45,28 @@
         name: '',
         description: '',
         // boardId: this.$store.state.activeBoard._id 
-        boardId: this.$route.params.id//
+        boardId: this.$route.params.id,
+        lists:[]
       }
     },
     mounted() {
-      this.$store.dispatch('getBoard', this.$route.params.id)
+     
+      this.$store.dispatch('getBoard', this.boardId )
       // this.$store.dispatch('getLists', this.$route.params.id)
-      this.lists = this.$store.dispatch('getLists', this.boardId)
+     this.$store.dispatch('getLists', this.boardId)
+    this.lists = this.$store.state.activeList.lists;
+     console.log(this.$store.state.activeList.lists);
+      
+
     },
     computed: {
       board() {
         return this.$store.state.activeBoard
       },
       lists() {
-        // return this.$store.state.activeLists
-        return this.$store.state.lists//
+        
+         return this.$store.state.activeLists
+        //return this.$store.state.lists//
       }
     },
     components: {
@@ -65,20 +74,20 @@
     },
     methods: {
       createList() {
-        // this.$store.dispatch('createlist', {
-        //   name: this.name,
-        //   boardId: this.board._id
-        // })
-        this.$store.dispatch('createList', { name: this.name, description: this.description, boardId: this.boardId })
+        this.$store.dispatch('createList', {
+          name: this.name,
+          boardId: this.board._id
+        })
+       // this.$store.dispatch('createList', { name: this.name, description: this.description, boardId: this.boardId })
         // this.name = ''
       },
       removeBoard(board) {
         this.$store.dispatch('removeBoard', board)
       },
 
-      // logout() {
-      //   this.$store.dispatch.logout()
-      // }
+      logout() {
+        this.$store.dispatch.logout()
+      }
     }
   }
 

@@ -39,20 +39,27 @@
     props: ["listProp", "listIndex"],
     data() {
       return {
-        name: '',
+        name: this.listProp.name,
         description: '',
         boardId: this.$store.state.activeBoard._id,
-        listId: this.listProp._id
+        listId: this.listProp._id,
+        tasks:[],
+         listData: this.listProp
       }
+    },
+    mounted(){
+    
+      this.tasks = this.$store.state.tasks;
     },
     created() {
       // debugger
-      this.$store.dispatch('getTasks', { boardId: this.listProp.boardId, listId: this.listProp._id })
+      
+      this.$store.dispatch('getTasks', { boardId: this.boardId, listId: this.listId })
     },
     computed: {
       tasks() {
         //debugger
-        return this.$store.state.tasks[this.listProp._id]
+        //return this.$store.state.tasks[this.listProp._id]
       }
     },
     methods: {
