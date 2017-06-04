@@ -23,6 +23,6 @@
 </script>
 
 
-<style scoped lang="sass">
+<style scoped>
 
 </style>
