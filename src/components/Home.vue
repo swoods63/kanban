@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="navbar">
+   <div class="navbar">
       <div class="container">
         <div class="row">
           <div class="col-xs-12 first">
