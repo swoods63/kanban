@@ -41,7 +41,7 @@
     computed: {},
     methods: {
       login() {
-        this.$store.dispatch('login', { email: this.email, password: this.password })
+        this.$store.dispatch('login', {email: this.email, password: this.password})
       }
     },
     components: {}
@@ -64,4 +64,8 @@
 
     text-align: center;
   }
+  p {
+    color: white;
+  }
+  
 </style>

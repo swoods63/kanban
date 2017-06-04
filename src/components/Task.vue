@@ -14,44 +14,34 @@
 
 
 <script>
-  import Comment from './comment'
-
-  export default {
-    name: 'task',
-    props: ["taskProp", "taskIndex"],
-    data() {
-      return {
-        name: '',
-        boardId: this.$store.state.activeBoard._id,
-        listId: this.taskProp.listId,
-        taskId: this.taskProp._id
-      }
-      // selected: this.list.name
-    },
-    mounted() {
-      this.$store.dispatch('getComments', { boardId: this.taskProp.boardId, listId: this.taskProp.listId, taskId: this.taskProp._id })
-      // debugger
-    },
-    computed: {
-      comments() {
-        //  debugger
-        return this.$store.state.comments[this.taskProp._id]
-      }
-    },
-    methods: {
-      removeTask(task) {
-        this.$store.dispatch('removeTask', task)
-      },
-      createComment() {
-        //   debugger
-        this.$store.dispatch('createComment', { name: this.name, boardId: this.taskProp.boardId, listId: this.taskProp.listId, taskId: this.taskProp._id })
-      }
-    },
-    components: {
-      Comments
+import Comment from './comment'
+export default {
+  name: 'task',
+  props: ['taskProp'],
+ mounted(){
+    this.$store.dispatch('getComments', this.taskProp)
+  },  
+  computed: {
+    comments(){
+      return this.$store.state.activeComments[this.taskProp._id]
     }
+  },
+  methods:{
+  createComments(){
+    this.$store.dispatch('createComments', {
+      name: 'Testing comments creation',
+      description: 'comments comments comments'
+    })
+  },
+  removeComments(comments){
+    this.$store.dispatch('removeComments', comments)
   }
-
+  },
+  components:{
+    Comment
+  }
+}
+  
 </script>
 
 
