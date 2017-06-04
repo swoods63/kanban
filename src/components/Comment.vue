@@ -11,18 +11,27 @@
     export default {
         name: 'comment',
         //props recieves data
-        props: ['comment-data'],
+        props: ["commentProp", "commentIndex"],
+        data() {
+            return {}
+        },
+        computed: {
+            comment() {
+
+            }
+        },
         methods: {
-
+            removeComment(comment) {
+                this.$store.dispatch('removeComment', comment)
+            }
         },
-        mounted() {
-        },
-
+        components: {
+        }
     }
 
 </script>
 
 
-<style scoped lang="sass">
+<style scoped>
 
 </style>

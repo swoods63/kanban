@@ -19,11 +19,20 @@
 
 </template>
 <script>
+  import Login from './Login'
+  import Register from './Register'
+
   export default {
     name: 'home',
+    mounted() {
+      this.$store.dispatch('getAuth')
+    },
     computed: {},
     methods: {},
-    components: {}
+    components: {
+      Login,
+      Register
+    }
   }
 
 </script>

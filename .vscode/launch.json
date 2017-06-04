@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     // Use IntelliSense to learn about possible Node.js debug attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
@@ -11,4 +12,18 @@
             "program": "${workspaceRoot}\\build\\dev-server.js"
         }
     ]
+=======
+  // Use IntelliSense to learn about possible Node.js debug attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceRoot}\\build\\dev-server.js"
+    }
+  ]
+>>>>>>> 3233d1eeaf6cd57ddaad60ad439aee5d4ee35719
 }

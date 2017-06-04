@@ -4,11 +4,11 @@
       <div class="row" v-for="comment in comments">
         <div class="col-xs-4">
           <div class="well">
-            <comment :commentProp="comment"></comment>            
+            <comment :commentProp="comment"></comment>
           </div>
         </div>
       </div>
-    </div>      
+    </div>
   </div>
 </template>
 
@@ -17,7 +17,6 @@
 import Comment from './comment'
 export default {
   name: 'task',
-
   props: ['taskProp'],
  mounted(){
     this.$store.dispatch('getComments', this.taskProp)
