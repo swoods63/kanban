@@ -41,28 +41,32 @@ export default {
       return {
         name: '',
         description: '',
-        boardId: this.$store.state.activeBoard._id
+        // boardId: this.$store.state.activeBoard._id 
+        boardId: this.$route.params.id//
       }
     },
   mounted(){
     this.$store.dispatch('getBoard', this.$route.params.id)
-    this.$store.dispatch('getLists', this.$route.params.id)
+    // this.$store.dispatch('getLists', this.$route.params.id)
+    this.lists = this.$store.dispatch('getLists', this.boardId)
   },
   computed:{
     board(){
       return this.$store.state.activeBoard
     },
     lists(){
-      return this.$store.state.activeLists
+      // return this.$store.state.activeLists
+      return this.$store.state.lists//
     } 
   },
   methods:{
     createList(){
-      this.$store.dispatch('createlist', {
-        name: this.name,
-        boardId: this.board._id
-      })
-      this.name = ''
+      // this.$store.dispatch('createlist', {
+      //   name: this.name,
+      //   boardId: this.board._id
+      // })
+        this.$store.dispatch('createList', {name: this.name, description: this.description, boardId: this.boardId})
+      // this.name = ''
     },
     logout(){
       this.$store.dispatch.logout()
