@@ -32,10 +32,10 @@
 
 
 <script>
-  import Tasks from './Tasks'
+  import Task from './Task'
   import draggable from 'vuedraggable'
   export default {
-    name: 'lists',
+    name: 'list',
     props: ["listProp", "listIndex"],
     data() {
       return {
