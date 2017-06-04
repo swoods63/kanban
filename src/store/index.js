@@ -1,3 +1,5 @@
+
+
 import axios from 'axios'
 import router from '../router'
 import Vue from 'vue'
@@ -23,11 +25,14 @@ let state = {
   boards: [],
   activeBoard: {},
   lists: [],
-  activeList: {},
+  // activeList: {},
   error: {},
-  activeTask: {},
-  activeComment: {},
-  user: {}
+  // activeTask: {},
+  // activeComment: {},
+  user: {},
+  tasks: {},
+  comments: {}
+
 }
 
 let handleError = (state, err) => {
@@ -46,24 +51,34 @@ export default new Vuex.Store({
     setActiveBoard(state, activeBoard) {
       state.activeBoard = activeBoard
     },
-    setLogin(state, user) {
-      state.user = user
-    },
+    // setLogin(state, user) {
+    //   state.user = user
+    // },
+    // setLists(state, lists) {
+    //   state.lists = lists
+    // },
     setActiveList(state, activeList) {
       state.activeList = activeList
     },
-    setActiveTask(state, task) {
-      state.activeTasks[listId] = task
+    // setActiveTask(state, task) {
+    //   state.activeTasks[listId] = task
+    setTasks(state, list) {
+      Vue.set(state.tasks, list._id, list.tasks)
     },
-    setActiveComment(state, comment) {
-      state.activeComment = comment
+    // setActiveComment(state, comment) {
+    //   state.activeComment = comment
+    setComments(state, task) {
+      Vue.set(state.comments, task._id, task.comments)
     },
-    setRegister(state, user) {
+    setUser(state, user) {
       state.user = user
-    },
-    setAuth(state, Auth){
-      state.Auth = Auth
     }
+    // setRegister(state, user) {
+    //   state.user = user
+    // },
+    // setAuth(state, Auth){
+    //   state.Auth = Auth
+    // }
 
   },
 
@@ -71,7 +86,7 @@ export default new Vuex.Store({
   // Dispatch fires actions, commit fires mutations
   actions: {
     getBoards({commit, dispatch}) {
-      api('userboards')
+      api('boards')
         .then(res => {
           commit('setBoards', res.data.data)
         })
@@ -80,7 +95,6 @@ export default new Vuex.Store({
 
 
     getBoard({commit, dispatch}, id) {
-
       api('boards/' + id)
         .then(res => {
           commit('setActiveBoard', res.data.data)
@@ -99,39 +113,47 @@ export default new Vuex.Store({
     },
 
 
-    removeBoard({commit, dispatch }, board) {
+    removeBoard({commit, dispatch}, board) {
       api.delete('boards/' + board._id)
         .then(res => {
+          //router.push('/')
           dispatch('getBoards')
         })
         .catch(handleError)
     },
-
-    getLists({commit, dispatch }, id) {
-      api('/boards/' + id + '/lists/')
+    // ===========================
+    getLists({commit, dispatch}, id) {
+      api('/boards/' + id + '/lists')
         .then(res => {
-          commit('setActiveLists', res.data.data)
+          commit('setActiveList', res.data.data)
+        })
+        .catch(handleError)
+    },
+    // -------------------------------------
+    createList({commit, dispatch}, list) {
+      api.post('/lists', list)
+        .then(res => {
+          dispatch('getLists', list.boardId)
+        })
+        .catch(handleError)
+    },
+    editList(list) {
+      api.put('/lists', list)
+        .then(res => {
+          this.getLists(list._id)
         })
         .catch(handleError)
     },
 
-    createLists({ commit, dispatch }, list) {
-      api.post('lists/', list)
-        .then(res => {
-          dispatch('getLists')
-        })
-        .catch(handleError)
-    },
-
-    removeLists({ commit, dispatch }, list) {
+    removeList({commit, dispatch}, list) {
       api.delete('lists/' + list._id)
         .then(res => {
-          dispatch('getLists')
+          dispatch('getLists', list.boardId)
         })
         .catch(handleError)
     },
 
-    getTasks({ commit, dispatch }, boardId, listId) {
+    getTasks({commit, dispatch}, boardId, listId) {
       api('boards/' + boardId + '/lists/' + listId + '/tasks')
         .then(res => {
           //Vue.set(state.tasks, listId, res.data.data.tasks)
@@ -140,25 +162,25 @@ export default new Vuex.Store({
         .catch(handleError)
     },
 
-    moveTask({ commit, dispatch }, task) {
+    moveTask({commit, dispatch}, task) {
       api.put('tasks/' + task._id, task)
         .then(res => {
-          dispatch('getTasks')
+          dispatch('getTasks', { boardId: task.boardId, listId: task.listId })
           //  (task.boardId, task.listId)
         })
         .catch(handleError)
     },
-    createTask({ commit, dispatch }, task) {
+    createTask({commit, dispatch}, task) {
       api.post('task/', task)
         .then(res => {
-          dispatch('getTasks')
+          dispatch('getTasks', { boardId: task.boardId, listId: task.listId })
         })
         .catch(handleError)
     },
-    removeTask({ commit, dispatch }, task) {
+    removeTask({commit, dispatch}, task) {
       api.delete('task/' + task._id)
         .then(res => {
-          dispatch('getTasks')
+          dispatch('getTasks', { boardId: task.boardId, listId: task.listId })
         })
         .catch(handleError)
     },
@@ -171,12 +193,27 @@ export default new Vuex.Store({
         })
         .catch(handleError)
     },
+    createComment({commit, dispatch}, comment) {
+      api.post('/comments', comment)
+        .then(res => {
+          dispatch('getComments', { boardId: comment.boardId, listId: comment.listId, taskId: comment.taskId })
+        })
+        .catch(handleError)
+    },
+    removeComment({commit, dispatch}, comment) {
+      api.delete('comments/' + comment._id)
+        .then(res => {
+          dispatch('getComments', { boardId: comment.boardId, listId: comment.listId, taskId: comment.taskId })
+          //this.getLists(list.boardId)
+        })
+        .catch(handleError)
+    },
 
-    login({ commit, dispatch }, user) {
+    login({commit, dispatch}, user) {
       auth.post('login', user)
         .then(res => {
           console.log(res)
-          commit('setLogin', res.data.data)
+          commit('setUser', res.data.data)
           router.push('/boards')
         })
         .catch(handleError)
@@ -198,16 +235,27 @@ export default new Vuex.Store({
     getAuth({commit, dispatch}) {
       auth('authenticate')
         .then(res => {
-          commit('setAuth',  res.data.data)
-          router.push('/boards')  
+          commit('setUser', res.data.data)
+          if (state.user === null) {
+            router.push('/')
+          } else {
+            router.push('/boards')
+          }
+
         }).catch(err => {
           router.push('/login')
         })
     },
+    logout({commit, dispatch}, user) {
+      auth.delete('logout', user)
+        .then(res => {
+          router.push('/')
+          //console.log(res)
+        }).catch(handleError)
 
-
+    },
     clearError({commit, dispatch}) {
-      state.error = {}
+      commit('setError')
     }
   }
 })

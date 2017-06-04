@@ -1,8 +1,15 @@
 <template>
-    <div class="task">
-
-
-    </div>
+  <div class="task">
+    <div class="container">
+      <div class="row" v-for="comment in comments">
+        <div class="col-xs-4">
+          <div class="well">
+            <comment :commentProp="comment"></comment>            
+          </div>
+        </div>
+      </div>
+    </div>      
+  </div>
 </template>
 
 
