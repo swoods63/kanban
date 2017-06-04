@@ -14,34 +14,80 @@
  </div>
         <!--<task v-for="task in tasks" :taskProp = task></task>-->
   <div class="well well-sm">
-  <div class="list" droppable="true" v-on:drop.capture="createTasks" ondragover="event.preventDefault()">
-    Active List: {{listData.name}}  ---- {{listData.description}} ---- {{listData._id}}
-    <form @submit.prevent="createNewTasks(task)">
-      <input type="text" v-model="name" required placeholder="Create Tasks">
-      <button type="submit">+</button>
-      <span @submit.prevent="removeTasks(task)">x</span>
-    </form>
-    <div v-for="(task, i) in tasks" :key="i" :id="i" class="tasks" draggable="true" v-on:dragstart.capture="moving">
-      <task :taskData="task"></task>
-      <div @click="getDets" v-on:dragend="moveTasks">
+    <div class="list" droppable="true" v-on:drop.capture="createTasks" ondragover="event.preventDefault()">
+      Active List: {{listData.name}} ---- {{listData.description}} ---- {{listData._id}}
+      <form @submit.prevent="createNewTasks(task)">
+        <input type="text" v-model="name" required placeholder="Create Tasks">
+        <button type="submit">+</button>
+        <span @submit.prevent="removeTasks(task)">x</span>
+      </form>
+      <div v-for="(task, i) in tasks" :key="i" :id="i" class="tasks" draggable="true" v-on:dragstart.capture="moving">
+        <task :taskData="task"></task>
+        <div @click="getDets" v-on:dragend="moveTasks">
+        </div>
       </div>
     </div>
   </div>
-</div>      
 </template>
 
 
 <script>
-export default {
-    name: 'list',
-    data(){
-
+  import Tasks from './Tasks'
+  import draggable from 'vuedraggable'
+  export default {
+    name: 'lists',
+    props: ["listProp", "listIndex"],
+    data() {
+      return {
+        name: '',
+        description: '',
+        boardId: this.$store.state.activeBoard._id,
+        listId: this.listProp._id
+      }
     },
-    props: ['listProp'],
-    computed:{},
-    methods:{},
-    components:{}
-}
+    created() {
+      // debugger
+      this.$store.dispatch('getTasks', { boardId: this.listProp.boardId, listId: this.listProp._id })
+    },
+    computed: {
+      tasks() {
+        //debugger
+        return this.$store.state.tasks[this.listProp._id]
+      }
+    },
+    methods: {
+      createTask() {
+        this.$store.dispatch('createTask', { name: this.name, description: this.description, boardId: this.boardId, listId: this.listId })
+      },
+      removeList(list) {
+        this.$store.dispatch('removeList', list)
+      },
+      editList(list) {
+        this.$store.dispatch('editList', list)
+      },
+      removeTask(event) {
+        //     let i = this.tasks.indexOf(this.tasks)
+        debugger
+        var task = this.tasks[event.target.id]
+        //   this.$store.tasks.splice(index, 1)
+        this.$store.dispatch('removeTask', task)
+      },
+      moving(event) {
+        var task = this.tasks[event.target.id]
+        event.dataTransfer.setData('text/javascript', JSON.stringify(task))
+      },
+      createTasks(event) {
+        var task = JSON.parse(event.dataTransfer.getData('text/javascript'))
+        // this.$store.dispatch('removeTask', task)
+        task.listId = this.listProp._id
+        this.$store.dispatch('moveTasks', task)
+      }
+    },
+    components: {
+      Tasks
+    }
+  }
+
 </script>
 
 
