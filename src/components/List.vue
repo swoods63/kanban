@@ -13,6 +13,8 @@
        
  </div>
         <!--<task v-for="task in tasks" :taskProp = task></task>-->
+
+        
   <div class="well well-sm">
     <div class="list" droppable="true" v-on:drop.capture="createTasks" ondragover="event.preventDefault()">
       Active List: {{listData.name}} ---- {{listData.description}} ---- {{listData._id}}
