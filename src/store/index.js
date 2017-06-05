@@ -10,13 +10,13 @@ Vue.use(Vuex)
 
 let api = axios.create({
   baseURL: 'https://vue-dustysue1.herokuapp.com/api/',
-  timeout: 2000,
+  timeout: 3000,
   withCredentials: true
 })
 
 let auth = axios.create({
   baseURL: 'https://vue-dustysue1.herokuapp.com/',
-  timeout: 2000,
+  timeout: 3000,
   withCredentials: true
 })
 
@@ -166,14 +166,7 @@ export default new Vuex.Store({
         .catch(handleError)
     },
 
-    moveTask({commit, dispatch}, task) {
-      api.put('tasks/' + task._id, task)
-        .then(res => {
-          dispatch('getTasks', { boardId: task.boardId, listId: task.listId })
-          //  (task.boardId, task.listId)
-        })
-        .catch(handleError)
-    },
+    
     createTask({commit, dispatch}, task) {
       api.post('task/', task)
         .then(res => {
