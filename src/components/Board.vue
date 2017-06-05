@@ -16,7 +16,7 @@
                   <button class="btn btn-primary" type="submit">Create List</button>
                 </form>
               </div>
-              <div class="col-xs-8 ">
+              <div class="col-xs-8">
                 <h1>Board Name: {{board.name}}</h1>
                 <h4>Board description: {{board.description}}</h4>
               </div>
