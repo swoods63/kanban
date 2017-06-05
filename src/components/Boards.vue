@@ -71,6 +71,7 @@
 </script>
 
 <style scoped>
+
 .margin-top{
   margin-top: 2%;
 }
@@ -81,4 +82,5 @@
   border-color: darkblue;
   color: darkblue
 }
+
 </style>
