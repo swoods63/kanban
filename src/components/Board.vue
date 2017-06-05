@@ -3,35 +3,42 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
-          <div>
-            <button type="button" class="btn btn-success" @click="logout">Logout</button>
-          </div>
-        </div>
-        <div class="col-xs-4">
-          <form @submit.prevent="createList">
-            <div class="form-group">
-              <input type="text" class="form-control" v-model="name" placeholder="List Name" required>
+          <div class="well well-outer">
+            <div class="row">
+              <div class="col-xs-4">
+                <form @submit.prevent="createList">
+                  <div class="form-group">
+                    <input type="text" class="form-control" v-model="name" placeholder="List Name" required>
+                  </div>
+                  <div class="form-group">
+                    <textarea rows="4" cols="50" class="form-control" v-model="description" placeholder="Description"></textarea>
+                  </div>
+                  <button class="btn btn-primary" type="submit">Create List</button>
+                </form>
+              </div>
+              <div class="col-xs-8 ">
+                <h1>Board Name: {{board.name}}</h1>
+                <h4>Board description: {{board.description}}</h4>
+              </div>
+              <div class="col-xs-2 col-xs-offset-3">
+                <button type="button" class="btn btn-success" @click="logout">Logout</button>
+              </div>
             </div>
-
-            <div class="form-group">
-              <textarea rows="4" cols="50" class="form-control" v-model="description" placeholder="Description"></textarea>
+            <div class="row">
+              <div class="col-xs-12">
+                <h2>Board Lists:</h2>
+              </div>
             </div>
-            <button class="btn btn-primary" type="submit">Create List</button>
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <!--<div class="col-xs-4">
-          <div class="well">
-            <list :listProp="list"></list>
-            <h1>Board Name: {{board.name}}</h1>
-            <h2>Board description: {{board.description}}</h2>
+            <div class="row">
+              <div class="col-xs-4" v-for="list in lists">
+                <div class="well">            
+                  <List :listProp="list"></List>            
+                </div>
+              </div>    
+            </div>
           </div>
-        </div>-->
-        <div>lists</div>       
-        <div v-for="list in lists">List is {{list._id}}</div>       
-         <List v-for="list in lists" :listProp="list" class="col-xs-4"></List>
-      </div>
+        </div>        
+      </div>      
     </div>
   </div>
 </template>
@@ -46,17 +53,17 @@
         description: '',
         // boardId: this.$store.state.activeBoard._id 
         boardId: this.$route.params.id,
-        lists:[]
+        lists: []
       }
     },
     mounted() {
-     
-      this.$store.dispatch('getBoard', this.boardId )
+
+      this.$store.dispatch('getBoard', this.boardId)
       // this.$store.dispatch('getLists', this.$route.params.id)
-     this.$store.dispatch('getLists', this.boardId)
-    this.lists = this.$store.state.activeList.lists;
-     console.log(this.$store.state.activeList.lists);
-      
+      this.$store.dispatch('getLists', this.boardId)
+      this.lists = this.$store.state.activeList.lists;
+      console.log(this.$store.state.activeList.lists);
+
 
     },
     computed: {
@@ -64,8 +71,8 @@
         return this.$store.state.activeBoard
       },
       lists() {
-        
-         return this.$store.state.activeLists
+
+        return this.$store.state.activeLists
         //return this.$store.state.lists//
       }
     },
@@ -78,7 +85,7 @@
           name: this.name,
           boardId: this.board._id
         })
-       // this.$store.dispatch('createList', { name: this.name, description: this.description, boardId: this.boardId })
+        // this.$store.dispatch('createList', { name: this.name, description: this.description, boardId: this.boardId })
         // this.name = ''
       },
       removeBoard(board) {
@@ -95,4 +102,15 @@
 
 <style scoped>
 
+.well{
+  opacity: .8;
+  color: darkblue; 
+  border-color: darkblue;
+
+}
+
+.well-outer{
+  background:  #b3d9ff
+
+}
 </style>

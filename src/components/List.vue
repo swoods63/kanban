@@ -12,8 +12,12 @@
     </div>
        
  </div>
-        <!--<task v-for="task in tasks" :taskProp = task></task>-->
-  <div class="well well-sm">
+ </template>-->
+
+    <!--<task v-for="task in tasks" :taskProp = task></task>-->
+
+
+ <div class="well well-sm">
     <div class="list" droppable="true" v-on:drop.capture="createTasks" ondragover="event.preventDefault()">
       Active List: {{listData.name}} ---- {{listData.description}} ---- {{listData._id}}
       <form @submit.prevent="createNewTasks(task)">
@@ -44,7 +48,7 @@
         boardId: this.$store.state.activeBoard._id,
         listId: this.listProp._id,
         tasks:[],
-         listData: this.listProp
+        listData: this.listProp
       }
     },
     mounted(){
