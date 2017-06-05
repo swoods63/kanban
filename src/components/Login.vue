@@ -57,7 +57,7 @@
 
   .first {
 
-    background: blue;
+    background:  #b3d9ff;
   }
 
   .second {

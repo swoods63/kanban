@@ -8,7 +8,7 @@
               <div class="col-xs-4">
                 <form @submit.prevent="createList">
                   <div class="form-group">
-                    <input type="text" class="form-control" v-model="name" placeholder="List Name" required>
+                    <input type="text" class="form-control" v-model="name" placeholder="Create List" required>
                   </div>
                   <div class="form-group">
                     <textarea rows="4" cols="50" class="form-control" v-model="description" placeholder="Description"></textarea>
@@ -93,7 +93,7 @@
       },
 
       logout() {
-        this.$store.dispatch.logout()
+        this.$store.dispatch('logout', this.user)
       }
     }
   }
